@@ -1,0 +1,12 @@
+.body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100% !important;
+}
+
+.dynamic-page {
+    overflow-y: auto;
+    height: 700px;
+}

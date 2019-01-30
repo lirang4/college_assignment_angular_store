@@ -1,0 +1,21 @@
+.header {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.headline {
+    font-size: 42px;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.analyze-button {
+    margin-top: 15px;
+    width: 150px;
+}
