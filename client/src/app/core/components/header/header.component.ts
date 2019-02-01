@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,9 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
   currentPage: string;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
@@ -21,5 +24,13 @@ export class HeaderComponent implements OnInit {
 
   navigage(naviageTo: string): void {
     this.router.navigate([`/${naviageTo}`]);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  onLogout(): void {
+    this.authService.logout();
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
     // TODO: Validate the info with the info on the server.
     setTimeout(() => {
       this.isLoading = false;
+      this.authService.login();
       this.router.navigate([`/admin`]);
     }, 3000);
   }
