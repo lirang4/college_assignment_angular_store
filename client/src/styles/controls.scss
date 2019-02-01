@@ -19,3 +19,7 @@ button:disabled {
     opacity: var(--disabled-opacity);
     pointer-events: none;
 }
+
+.header-icon {
+    padding: 0 14px;
+}

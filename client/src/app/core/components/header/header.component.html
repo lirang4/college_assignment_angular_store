@@ -3,13 +3,14 @@
     <span class="clickable" (click)="navigage('home')">Phone Store</span>
 
     <div>
-      <mat-icon class="header-icon clickable" matTooltip="Home Page" (click)="navigage('home')">
-        home
-      </mat-icon>
+      <mat-icon class="header-icon clickable" matTooltip="Home Page" [ngClass]="currentPage==='home' ? 'selected-icon' : ''"
+        (click)="navigage('home')">home</mat-icon>
 
-      <mat-icon class="header-icon clickable" matTooltip="Adminsitrator Page" (click)="navigage('admin')">
-        account_circle
-      </mat-icon>
+      <mat-icon class="header-icon clickable" matTooltip="My Cart" [ngClass]="currentPage==='admin' ? 'selected-icon' : ''"
+        (click)="navigage('cart')">shopping_cart</mat-icon>
+
+      <mat-icon class="header-icon clickable" matTooltip="Adminsitrator Page" [ngClass]="currentPage==='admin' ? 'selected-icon' : ''"
+        (click)="navigage('admin')">account_circle</mat-icon>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

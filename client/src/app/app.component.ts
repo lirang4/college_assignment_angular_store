@@ -12,6 +12,10 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.subscribeToRouterEvents();
+  }
+
+  private subscribeToRouterEvents(): void {
     this.router.events.subscribe((event: RouterEvent) => {
       switch (true) {
         case event instanceof NavigationStart:
@@ -26,7 +30,6 @@ export class AppComponent implements OnInit {
 
         default:
           break;
-
       }
     });
   }
