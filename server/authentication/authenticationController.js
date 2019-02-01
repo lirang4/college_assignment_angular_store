@@ -6,7 +6,7 @@ exports.authenticate = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    if (ADMINS[username] && ADMINS[username] === Number(password)) {
+    if (ADMINS[username] && String(ADMINS[username]) === String(password)) {
         res.json({
             authorized: true
         });
