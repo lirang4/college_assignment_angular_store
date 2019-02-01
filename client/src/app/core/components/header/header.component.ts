@@ -9,8 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
   currentPage: string;
 
-  constructor(
-    private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
