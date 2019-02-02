@@ -20,6 +20,8 @@ const ram = {
     enum: ["2", "3", "4", "6", "8"],
 };
 
+
+
 module.exports = {
     brand : brand,
     colors : colors,

@@ -115,10 +115,8 @@ function createQuery(req) {
 exports.filters = (req, res) => {
     var query = {}
     //res.send(JSON.stringify(createQuery(req)));
-    if(req.body.brand) {
          //query = {$and:[{brand:{$regex: req.body.brand, $options: 'i'}}]}
-         query = createQuery(req);
-    }
+    query = createQuery(req);
 
     Phone.find(query , (err, phone) => {
         if (err)
