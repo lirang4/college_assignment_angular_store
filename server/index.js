@@ -7,6 +7,7 @@ const apiRoutes = require("./api-routes");
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const Phone = require('./phone/phoneModel');
+const Store = require('./stores/storeModel');
 
 const port = 8080;
 const app = express();
@@ -25,7 +26,39 @@ app.listen(port, () => {
     console.log("Running RestHub on port " + port);
 });
 
-scrap_phones_data();
+
+//create_stores();
+function create_stores() {
+    var store = new Store();
+    store.long = 32.789184;
+    store.lat = 35.000811;
+    store.open_hours = ["1: 12:00-18:00", "2: 12:00-18:00"];
+    store.phone = "055-556858";
+    store.save();
+
+    var store2 = new Store();
+    store2.long = 32.820326;
+    store2.lat = 34.973913;
+    store2.open_hours = ["1: 12:00-18:00", "2: 12:00-18:00"];
+    store2.phone = "055-556857";
+    store2.save();
+
+    var store3 = new Store();
+    store3.long = 32.783697;
+    store3.lat = 34.961097;
+    store3.open_hours = ["1: 12:00-18:00", "2: 12:00-18:00"];
+    store3.phone = "055-556856";
+    store3.save();
+
+    var store4 = new Store();
+    store4.long =32.775581;
+    store4.lat = 35.042839;
+    store4.open_hours = ["1: 12:00-18:00", "2: 12:00-18:00"];
+    store4.phone = "055-556855";
+    store4.save();
+}
+
+//scrap_phones_data();
 
 function scrap_phones_data() {
     for (let i = 1; i < 10; i++) {
