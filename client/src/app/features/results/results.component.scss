@@ -1,0 +1,19 @@
+.results-container {
+    height: 620px;
+    overflow-y: auto;
+}
+
+.result-card {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-card:hover {
+    background-color: var(--second-background-color);
+    color: black !important;
+}
+
+.property {
+    margin-right: 10px;
+}

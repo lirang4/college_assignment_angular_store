@@ -28,7 +28,7 @@ app.listen(port, () => {
 scrap_phones_data();
 
 function scrap_phones_data() {
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; i < 10; i++) {
         let options = {
             uri: `https://www.zap.co.il/models.aspx?sog=e-cellphone&pageinfo=${i}`,
             transform: function (body) {

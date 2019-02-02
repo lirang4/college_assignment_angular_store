@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -7,10 +7,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements OnInit {
+  results: any;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
-    console.log(this.route.snapshot.data.message);
+    this.results = this.route.snapshot.data.message.data;
+  }
+
+  navigateToDetails(id: string): void {
+    this.router.navigate([`/details/${id}`]);
   }
 }
