@@ -8,13 +8,12 @@ const phoneSchema = mongoose.Schema({
     },
     series: {
         type: String,
-        required: true
     },
     price: {
-        type: Number,
+        type: String,
         required: true
     },
-    color: { 
+    color: {
         type: [String],
         enum: constant.colors,
         default: "Black"
@@ -35,7 +34,7 @@ const phoneSchema = mongoose.Schema({
         type: [String],
         enum: constant.generation,
     },
-    ram:{
+    ram: {
         type: [String],
         enum: constant.ram,
     },
