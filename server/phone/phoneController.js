@@ -107,24 +107,35 @@ function addQuery(query, key, value) {
 function createQuery(req) {
     var query = {$and:[]};
     for(var key in req.body){
-        query.$and.push(addQuery(query, key, req.body[key]));
+        if(req.body != undefined)
+        {
+            query.$and.push(addQuery(query, key, req.body[key]));
+        }
     }
     return query;
 }
 
+function isEmptyObject(obj) {
+    return !Object.keys(obj).length;
+  }
+
 exports.filters = (req, res) => {
     var query = {}
-    //res.send(JSON.stringify(createQuery(req)));
+    //res.send(JSON.stringify(isEmptyObject(req.body)));
          //query = {$and:[{brand:{$regex: req.body.brand, $options: 'i'}}]}
-    query = createQuery(req);
+         
+    if(!isEmptyObject(req.body))
+    {
+        query = createQuery(req);
+    }
 
     Phone.find(query , (err, phone) => {
         if (err)
             res.send(err);
-
-        res.json({
+         res.json({
             message: 'Phone details loading..',
             data: phone
         });
-    });
+     });
+    
 };
