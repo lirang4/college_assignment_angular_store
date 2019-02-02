@@ -7,11 +7,7 @@
 
 <div class="results-container">
   <mat-card class="result-card clickable" *ngFor="let result of results" (click)="navigateToDetails(result._id)">
-    <div>
-      <span class="property">{{ result.brand }}</span>
-      <span class="property">{{ result.screen_size }}</span>
-      <span class="property">{{ result.color }}</span>
-    </div>
+    <span class="property">{{ result.series }}</span>
     <span>{{ result.price }}</span>
   </mat-card>
 </div>

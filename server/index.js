@@ -91,6 +91,10 @@ function scrap_phones_data() {
                     phones[i].price = $(this).text().trim();
                 });
 
+                $('.ProdInfoTitle').each(function (i, elem) {
+                    phones[i].series = $(this).text().trim();
+                });
+
                 for (const model of phones) {
                     model.save();
                 }
