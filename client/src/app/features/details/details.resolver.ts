@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-
-import { Observable, of } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Injectable()
-export class DetailsResolver implements Resolve<Observable<string>> {
-    constructor() { }
+export class DetailsResolver implements Resolve<Observable<any>> {
 
-    resolve() {
-        const resolverData = 'data';
+    constructor(private http: HttpClient) { }
 
-        return of(resolverData).pipe(
-            delay(3000)
-        );
+    resolve(route: ActivatedRouteSnapshot) {
+        return this.http.get(`/api/phone/${route.params.id}`).pipe(delay(3000));
     }
 }

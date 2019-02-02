@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: './features/results/results.module#ResultsModule'
   },
   {
-    path: 'details',
+    path: 'details/:id',
     loadChildren: './features/details/details.module#DetailsModule'
   },
   {

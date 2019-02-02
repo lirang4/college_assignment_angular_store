@@ -6,7 +6,7 @@ router.route('/phones')
     .get(phoneController.index)
     .post(phoneController.new);
 
-router.route('/phone/phone_id=:phone_id')
+router.route('/phone/:phone_id')
     .get(phoneController.view)
     .post(phoneController.update)
     .put(phoneController.update)
