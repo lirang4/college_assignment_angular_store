@@ -1,10 +1,5 @@
 <div class="search-container">
-  <mat-form-field>
-    <input matInput placeholder="Search Phone">
-  </mat-form-field>
-
-  <button mat-button class="row search-button" (click)="onSearch()">Search</button>
-
+  <h2>Filters:</h2>
   <div>
     <div *ngFor="let key of $filtersKeys | async">
       <span>{{ key }}:</span>
@@ -15,4 +10,5 @@
     </div>
   </div>
 
+  <button mat-button class="search-button" (click)="onSearch()">Search Phones</button>
 </div>
