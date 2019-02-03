@@ -51,7 +51,11 @@ export class FiltersService {
 
     const index = this.selectedFilters[key].indexOf(filter);
     if (index > -1) {
-      this.selectedFilters[key].slice(index, 1);
+      this.selectedFilters[key].splice(index, 1);
+
+      if (this.selectedFilters[key].length === 0) {
+        delete this.selectedFilters[key];
+      }
     }
   }
 }
