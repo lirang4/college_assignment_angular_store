@@ -13,6 +13,6 @@ router.route('/phone/:phone_id')
     .delete(phoneController.delete);
 
 router.route('/phones/filters/')
-    .get(phoneController.filters);
+    .post(phoneController.filters);
 
 module.exports = router;

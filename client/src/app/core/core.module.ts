@@ -6,6 +6,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { FiltersService } from './services/filters.service';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { AuthService } from './services/auth.service';
   providers: [
     AuthGuardService,
     AuthService,
+    FiltersService,
   ]
 })
 export class CoreModule {

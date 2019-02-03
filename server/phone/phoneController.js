@@ -95,20 +95,27 @@ exports.delete = (req, res) => {
 
 function addQuery(query, key, value) {
     //{brand:{$regex: req.body.brand, $options: 'i'}}
-    var reg = {$or:[]};
+    var reg = {
+        $or: []
+    };
     var option = {};
-    for(var a in value){
-        reg.$or.push({[key]:{$regex:value[a]}});
+    for (var a in value) {
+        reg.$or.push({
+            [key]: {
+                $regex: value[a]
+            }
+        });
     }
-    return reg; 
+    return reg;
     //query[key] = {$or:[bla]}
 }
 
 function createQuery(req) {
-    var query = {$and:[]};
-    for(var key in req.body){
-        if(req.body != undefined)
-        {
+    var query = {
+        $and: []
+    };
+    for (var key in req.body) {
+        if (req.body != undefined) {
             query.$and.push(addQuery(query, key, req.body[key]));
         }
     }
@@ -117,25 +124,22 @@ function createQuery(req) {
 
 function isEmptyObject(obj) {
     return !Object.keys(obj).length;
-  }
+}
 
 exports.filters = (req, res) => {
     var query = {}
-    //res.send(JSON.stringify(isEmptyObject(req.body)));
-         //query = {$and:[{brand:{$regex: req.body.brand, $options: 'i'}}]}
-         
-    if(!isEmptyObject(req.body))
-    {
+
+    if (!isEmptyObject(req.body)) {
         query = createQuery(req);
     }
 
-    Phone.find(query , (err, phone) => {
+    Phone.find(query, (err, phone) => {
         if (err)
             res.send(err);
-         res.json({
+        res.json({
             message: 'Phone details loading..',
             data: phone
         });
-     });
-    
+    });
+
 };

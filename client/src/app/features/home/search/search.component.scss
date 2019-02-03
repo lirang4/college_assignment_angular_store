@@ -1,9 +1,17 @@
 .search-container {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 450px;
 }
 
 .row {
     margin-bottom: 10px;
+}
+
+.search-button {
+    margin-bottom: 30px;
+}
+
+.filter {
+    margin-left: 8px;
 }
