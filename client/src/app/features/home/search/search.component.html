@@ -9,7 +9,8 @@
     <div *ngFor="let key of $filtersKeys | async">
       <span>{{ key }}:</span>
       <br>
-      <mat-checkbox class="filter" *ngFor="let value of ($filters | async)[key]" (change)="onCheckboxChange(key, value, $event)">
+      <mat-checkbox class="filter" *ngFor="let value of ($filters | async)[key]" [checked]="isSelected(key, value)"
+        (change)="onCheckboxChange(key, value, $event)">
         {{ value }}</mat-checkbox>
     </div>
   </div>

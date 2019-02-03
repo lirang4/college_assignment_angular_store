@@ -12,6 +12,8 @@ export class SearchComponent implements OnInit {
   $filters: any;
   $filtersKeys: any;
 
+  selectedFilters: any;
+
   constructor(
     private router: Router,
     private filtersService: FiltersService) {
@@ -20,10 +22,16 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.$filters = this.filtersService.Filters;
     this.$filtersKeys = this.filtersService.FiltersKeys;
+
+    this.selectedFilters = this.filtersService.SelectedFilters;
   }
 
   onSearch(): void {
     this.router.navigate([`/results`]);
+  }
+
+  isSelected(key: string, filter: string): boolean {
+    return this.selectedFilters[key] && this.selectedFilters[key].indexOf(filter) > -1;
   }
 
   onCheckboxChange(key: string, filter: string, event: MatCheckboxChange): void {
