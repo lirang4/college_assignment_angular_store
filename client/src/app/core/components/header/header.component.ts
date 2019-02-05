@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import io from 'socket.io-client';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   currentPage: string;
+  users: number;
 
   constructor(
     private router: Router,
@@ -19,6 +21,11 @@ export class HeaderComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.currentPage = event.urlAfterRedirects.slice(1);
       }
+    });
+
+    const socket = io('http://localhost:3001');
+    socket.on('USERS', (res) => {
+      this.users = res.users;
     });
   }
 

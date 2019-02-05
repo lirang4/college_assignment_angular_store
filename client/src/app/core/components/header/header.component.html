@@ -2,6 +2,8 @@
   <mat-toolbar-row class="header-layout">
     <span class="clickable" (click)="navigage('home')">Phone Store</span>
 
+    <span *ngIf="users">Connected Clients: {{ users }}</span>
+
     <div>
       <mat-icon class="header-icon clickable" matTooltip="Home Page" [ngClass]="currentPage==='home' ? 'selected-icon' : ''"
         (click)="navigage('home')">home</mat-icon>

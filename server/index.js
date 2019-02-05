@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const socket = require('socket.io');
+const http = require('http')
 
 const apiRoutes = require("./api-routes");
 
@@ -12,10 +14,13 @@ const Store = require('./stores/storeModel');
 const port = 8080;
 const app = express();
 
+// Initiate Mongo (Mongoose)
 mongoose.connect('mongodb://localhost/phone-store', {
     useNewUrlParser: true
 }).connection;
 
+
+// Initiate HTTP Server (Express)
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -26,8 +31,34 @@ app.listen(port, () => {
     console.log("Running RestHub on port " + port);
 });
 
+// Initiate Websocket Server (Socket.IO)
+const server = http.createServer(app)
+const io = require('socket.io').listen(server);
+server.listen(3001);
+usersCounter = [];
 
-//create_stores();
+io.sockets.on('connection', (client) => {
+    console.log('Client connected, sending message');
+
+    if (usersCounter.indexOf(client.id) === -1) {
+        usersCounter.push(client.id);
+    }
+
+    setInterval((client) => {
+        client.emit('USERS', {
+            users: usersCounter.length
+        });
+    }, 5000, client);
+
+    client.on('disconnect', function () {
+        const index = usersCounter.indexOf(client.id);
+        usersCounter.splice(index, 1);
+    });
+});
+
+// create_stores();
+//scrap_phones_data();
+
 function create_stores() {
     var store = new Store();
     store.long = 32.789184;
@@ -51,14 +82,12 @@ function create_stores() {
     store3.save();
 
     var store4 = new Store();
-    store4.long =32.775581;
+    store4.long = 32.775581;
     store4.lat = 35.042839;
     store4.open_hours = ["1: 12:00-18:00", "2: 12:00-18:00"];
     store4.phone = "055-556855";
     store4.save();
 }
-
-//scrap_phones_data();
 
 function scrap_phones_data() {
     for (let i = 1; i < 10; i++) {
