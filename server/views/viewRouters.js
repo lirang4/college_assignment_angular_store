@@ -4,6 +4,9 @@ const viewController = require('./viewController');
 
 router.route('/views')
     .get(viewController.index)
-    .post(viewController.new);
 
+
+ router.route('/mostViewed')
+    .get(viewController.mostViewed)
+    
 module.exports = router;

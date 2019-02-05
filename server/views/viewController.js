@@ -17,21 +17,22 @@ exports.index = (req, res) => {
     });
 };
 
-exports.new = (req, res) => {
-    var store = new Store();
+exports.mostViewed = (req, res) => {
+    var number = parseInt(req.query.top);
+    View.find({}).sort({viewsNumber : -1}).limit(number).populate('viewed_phone')
+    .exec ((err, view) => {
 
-    store.long = req.body.long;
-    store.lat = req.body.lat;
-    store.open_hours = req.body.open_hours;
-    store.phone = req.body.phone;
-
-    store.save((err) => {
-        if (err)
-            res.json(err);
-
+      if (err) {
         res.json({
-            message: 'New Store created!',
-            data: store
+            status: "error",
+            message: err,
         });
+    }
+
+    res.json({
+        status: "success",
+        message: "Views retrieved successfully",
+        data: view
     });
+  }); 
 };
