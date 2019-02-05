@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const constant = require('constants');
+const Schema = mongoose.Schema;
+
 const phoneSchema = mongoose.Schema({
     brand: {
         type: String,
         enum: constant.brand,
         required: true
     },
+    views: { type: Schema.Types.ObjectId, ref: 'Views' },
     series: {
         type: String,
     },
@@ -44,7 +47,7 @@ const phoneSchema = mongoose.Schema({
     }
 });
 
-const Phone = module.exports = mongoose.model('phone', phoneSchema);
+const Phone = module.exports = mongoose.model('Phone', phoneSchema);
 
 module.exports.get = (callback, limit) => {
     Phone.find(callback).limit(limit);
