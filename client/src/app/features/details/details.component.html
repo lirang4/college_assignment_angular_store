@@ -14,6 +14,8 @@
   <span class="row">screen_size: {{ phone.screen_size }}</span>
   <span class="row">memory_capacity: {{ phone.memory_capacity }}</span>
 
+  <img src="{{ phone.picture }}">
+
   <agm-map [latitude]="32.794044" [longitude]="34.989571" [zoom]="12" [disableDefaultUI]="false">
     <agm-marker *ngFor="let store of stores" [latitude]="store.long" [longitude]="store.lat"></agm-marker>
   </agm-map>

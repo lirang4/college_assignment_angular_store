@@ -8,13 +8,19 @@ const phoneSchema = mongoose.Schema({
         enum: constant.brand,
         required: true
     },
-    views: { type: Schema.Types.ObjectId, ref: 'Views' },
+    views: {
+        type: Schema.Types.ObjectId,
+        ref: 'Views'
+    },
     series: {
         type: String,
     },
     price: {
         type: String,
         required: true
+    },
+    picture: {
+        type: String
     },
     color: {
         type: [String],

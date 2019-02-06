@@ -57,8 +57,8 @@ io.sockets.on('connection', (client) => {
     });
 });
 
-// create_stores();
-//scrap_phones_data();
+create_stores();
+scrap_phones_data();
 
 function create_stores() {
     var store = new Store();
@@ -155,7 +155,7 @@ function scrap_phones_data() {
 
                     viewData.save(function (err) {
                         if (err) return handleError(err);
-                   });
+                    });
 
                     phones.push(model);
                 });
@@ -165,7 +165,11 @@ function scrap_phones_data() {
                 });
 
                 $('.ProdInfoTitle').each(function (i, elem) {
-                    phones[i].series = $(this).text().trim();
+                    phones[i].series = $(this).text().trim().replace(/טלפון סלולרי /g, '');
+                });
+
+                $('.ProdPic img').each(function (i, elem) {
+                    phones[i].picture = $(this).attr('src')
                 });
 
                 for (const model of phones) {
