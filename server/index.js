@@ -58,7 +58,7 @@ io.sockets.on('connection', (client) => {
 });
 
 // create_stores();
-scrap_phones_data();
+//scrap_phones_data();
 
 function create_stores() {
     var store = new Store();
@@ -148,7 +148,7 @@ function scrap_phones_data() {
                     model.ram = phone.ram;
 
                     const viewData = new View({
-                        viewed_phone: phone._id,
+                        viewed_phone: model._id,
                         viewsNumber: 0
                     });
                     model.views = viewData._id;
