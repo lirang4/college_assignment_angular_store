@@ -15,9 +15,6 @@
       <button mat-raised-button (click)="navigateToDetails(result._id)">
         <span>Info</span></button>
 
-      <button *ngIf="isAdmin()" mat-raised-button (click)="onUpdate(result)">
-        <span>Update</span></button>
-
       <button *ngIf="isAdmin()" mat-raised-button (click)="onDelete(result)">
         <span>Delete</span>
       </button>

@@ -37,8 +37,4 @@ export class ResultsComponent implements OnInit {
       this.http.delete(`/api/phone/${result._id}`).subscribe();
     }
   }
-
-  onUpdate(result: any): void {
-
-  }
 }
