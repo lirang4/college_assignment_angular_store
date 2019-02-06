@@ -10,6 +10,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 const Phone = require('./phone/phoneModel');
 const Store = require('./stores/storeModel');
+const View = require('./views/viewModel');
 
 const port = 8080;
 const app = express();
@@ -57,7 +58,7 @@ io.sockets.on('connection', (client) => {
 });
 
 // create_stores();
-//scrap_phones_data();
+scrap_phones_data();
 
 function create_stores() {
     var store = new Store();
@@ -145,6 +146,16 @@ function scrap_phones_data() {
                     model.memory_capacity = phone.memory_capacity;
                     model.screen_size = phone.screen_size;
                     model.ram = phone.ram;
+
+                    const viewData = new View({
+                        viewed_phone: phone._id,
+                        viewsNumber: 0
+                    });
+                    model.views = viewData._id;
+
+                    viewData.save(function (err) {
+                        if (err) return handleError(err);
+                   });
 
                     phones.push(model);
                 });
