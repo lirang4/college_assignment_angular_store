@@ -17,13 +17,12 @@ exports.index = (req, res) => {
             data: phones
         });
     });
-    
 };
 
 exports.new = (req, res) => {
     var phone = new Phone();
     phone._id = new mongoose.Types.ObjectId(),
-    phone.brand = req.body.brand;
+        phone.brand = req.body.brand;
     phone.series = req.body.series;
     phone.price = req.body.price;
     phone.colors = req.body.colors;
@@ -39,10 +38,10 @@ exports.new = (req, res) => {
     });
     phone.views = viewData._id;
 
-    phone.save((err) => {      
+    phone.save((err) => {
         viewData.save(function (err) {
             if (err) return handleError(err);
-       });
+        });
 
         if (err)
             res.json(err);
@@ -58,11 +57,11 @@ function updateViewCount(view) {
     view.viewsNumber += 1;
     view.save(function (err) {
         if (err) console.log('The err is  %s', err);
-   });
+    });
 }
 
 exports.view = (req, res) => {
-    Phone.findById(req.params.phone_id).populate('views').exec ((err, phone) => {
+    Phone.findById(req.params.phone_id).populate('views').exec((err, phone) => {
         updateViewCount(phone.views);
 
         if (err)
@@ -104,7 +103,21 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    Phone.remove({
+    Phone.findById(req.params.phone_id, (err, phone) => {
+        if (err)
+            res.send(err);
+
+        const viewId = phone.views;
+
+        View.deleteOne({
+            _id: viewId
+        }, (err, phone) => {
+            if (err)
+                res.send(err);
+        });
+    });
+
+    Phone.deleteOne({
         _id: req.params.phone_id
     }, (err, phone) => {
         if (err)

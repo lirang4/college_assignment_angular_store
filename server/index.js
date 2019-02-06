@@ -39,8 +39,6 @@ server.listen(3001);
 usersCounter = [];
 
 io.sockets.on('connection', (client) => {
-    console.log('Client connected, sending message');
-
     if (usersCounter.indexOf(client.id) === -1) {
         usersCounter.push(client.id);
     }
