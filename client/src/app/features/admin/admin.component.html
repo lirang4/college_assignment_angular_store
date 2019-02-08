@@ -5,6 +5,14 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div>
-  <canvas id="myChart" width="500" height="150"></canvas>
+<h2 class="title">Most Viewed Phones</h2>
+
+<div class="graph-container">
+  <div class="colors">
+    <span *ngFor="let color of colors; let index = index;" [ngStyle]="{'color': color}">{{
+      data[index].viewed_phone.series }} - {{ data[index].viewsNumber }}
+    </span>
+  </div>
+  <div id="chart-area"></div>
+
 </div>
