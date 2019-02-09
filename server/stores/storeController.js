@@ -1,7 +1,7 @@
 const Store = require('./storeModel');
 
 exports.index = (req, res) => {
-    Store.get((err, stores) => {
+    Store.find({}).populate('available_phones').exec ((err, stores) => {
         if (err) {
             res.json({
                 status: "error",
@@ -32,6 +32,26 @@ exports.new = (req, res) => {
         res.json({
             message: 'New Store created!',
             data: store
+        });
+    });
+};
+
+exports.addPhone =  (req, res) => {
+    console.log(req);
+    Store.findById(req.body.store_id).populate('available_phones').exec ((err, store) => {
+
+        if (err)
+            res.send(err);
+
+            store.available_phones.push(req.body.phone_id);
+            store.save((err) => {
+            if (err)
+                res.json(err);
+
+            res.json({
+                message: 'Store available',
+                data: store.available_phones
+            });
         });
     });
 };

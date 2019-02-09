@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const storeSchema = mongoose.Schema({
     lat: {
@@ -10,6 +11,11 @@ const storeSchema = mongoose.Schema({
         required: true
     },
     open_hours: [String],
+    available_phones: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Phone'
+    }],
+
     phone: String,
     create_date: {
         type: Date,
