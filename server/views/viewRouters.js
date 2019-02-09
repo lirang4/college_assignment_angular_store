@@ -8,5 +8,8 @@ router.route('/views')
 
  router.route('/mostViewed')
     .get(viewController.mostViewed)
+
+    router.route('/phoneBrandQuantity')
+    .get(viewController.phoneBrandQuantity)
     
 module.exports = router;
