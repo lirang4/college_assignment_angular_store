@@ -15,4 +15,8 @@ router.route('/phone/:phone_id')
 router.route('/phones/filters/')
     .post(phoneController.filters);
 
+router.route('/availableStores/:phone_id')
+    .get(phoneController.availableStores);
+
+
 module.exports = router;

@@ -1,6 +1,8 @@
 const Phone = require('./phoneModel');
 const View = require('../views/viewModel');
+const Store = require('../stores/storeModel');
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.index = (req, res) => {
     Phone.get((err, phones) => {
@@ -22,7 +24,7 @@ exports.index = (req, res) => {
 exports.new = (req, res) => {
     var phone = new Phone();
     phone._id = new mongoose.Types.ObjectId(),
-        phone.brand = req.body.brand;
+    phone.brand = req.body.brand;
     phone.series = req.body.series;
     phone.price = req.body.price;
     phone.colors = req.body.colors;
@@ -178,5 +180,29 @@ exports.filters = (req, res) => {
             data: phone
         });
     });
+};
 
+exports.availableStores = (req, res) => {
+        const aggregatorOpts = [
+          {$unwind: "$available_phones"},
+          {$group: {_id: "$available_phones", stores: {$push: "$_id"}}},
+          {$match: { _id: ObjectId(req.params.phone_id) }}
+          ];
+          
+          Store.aggregate(aggregatorOpts).exec((err, data) => {
+          Store.populate(data, {path: "stores"}, function (err, data) {
+            if (err) {
+              res.json({
+                  status: "error",
+                  message: err,
+              });
+          }
+      
+          res.json({
+              status: "success",
+              message: "Views retrieved successfully",
+              data: data
+          });
+        });
+    });
 };
