@@ -5,14 +5,26 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<h2 class="title">Most Viewed Phones</h2>
+<div class="admin-container">
+  <h2 class="title">Most Viewed Phones</h2>
 
-<div class="graph-container">
-  <div class="colors">
-    <span *ngFor="let color of colors; let index = index;" [ngStyle]="{'color': color}">{{
-      data[index].viewed_phone.series }} - {{ data[index].viewsNumber }}
-    </span>
+  <div class="graph-container">
+    <div *ngIf="data1" class="colors">
+      <span *ngFor="let color of colors; let index = index;" [ngStyle]="{'color': color}">
+        {{ data1[index].viewed_phone.series }} - {{ data1[index].viewsNumber }}
+      </span>
+    </div>
+    <div id="chart-area"></div>
   </div>
-  <div id="chart-area"></div>
 
+  <h2 class="title">Most Phones For Brand</h2>
+
+  <div class="graph-container">
+    <div *ngIf="data2" class="colors">
+      <span *ngFor="let color of colors; let index = index;" [ngStyle]="{'color': color}">
+        {{ data2[index]._id }} - {{ data2[index].value }}
+      </span>
+    </div>
+    <div id="chart-area2"></div>
+  </div>
 </div>
