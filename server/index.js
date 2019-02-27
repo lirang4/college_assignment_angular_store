@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 const http = require('http')
+const AhoCorasick = require('node-aho-corasick');
 
 const apiRoutes = require("./api-routes");
 
@@ -20,6 +21,8 @@ mongoose.connect('mongodb://localhost/phone-store', {
     useNewUrlParser: true
 }).connection;
 
+// Initiate aho model
+const ahoCorasick = new AhoCorasick();
 
 // Initiate HTTP Server (Express)
 app.use(bodyParser.urlencoded({
@@ -55,10 +58,7 @@ io.sockets.on('connection', (client) => {
     });
 });
 
-//create_stores();
-scrap_phones_data();
-
-function create_stores() {
+const create_stores = () => {
     var store = new Store();
     store.long = 32.789184;
     store.lat = 35.000811;
@@ -88,7 +88,7 @@ function create_stores() {
     store4.save();
 }
 
-function scrap_phones_data() {
+const scrap_phones_data = () => {
     for (let i = 1; i < 10; i++) {
         let options = {
             uri: `https://www.zap.co.il/models.aspx?sog=e-cellphone&pageinfo=${i}`,
@@ -136,7 +136,7 @@ function scrap_phones_data() {
                                 key = result[0];
                                 break;
                         }
-                        phone[key] = result[1].replace(',','');
+                        phone[key] = result[1].replace(',', '');
                     });
 
                     const model = new Phone();
@@ -164,6 +164,9 @@ function scrap_phones_data() {
 
                 $('.ProdInfoTitle').each(function (i, elem) {
                     phones[i].series = $(this).text().trim().replace(/טלפון סלולרי /g, '');
+                    ahoCorasick.add(phones[i].series);
+                    ahoCorasick.add(phones[i].brand);
+                    ahoCorasick.build();
                 });
 
                 $('.ProdPic img').each(function (i, elem) {
@@ -178,4 +181,12 @@ function scrap_phones_data() {
                 console.log(err);
             });
     }
+
+    ahoCorasick.build();
 }
+
+// Initiate stores
+create_stores();
+
+// Initiate phones from zap
+scrap_phones_data();
