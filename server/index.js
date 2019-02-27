@@ -55,7 +55,7 @@ io.sockets.on('connection', (client) => {
     });
 });
 
-create_stores();
+//create_stores();
 scrap_phones_data();
 
 function create_stores() {
@@ -136,7 +136,7 @@ function scrap_phones_data() {
                                 key = result[0];
                                 break;
                         }
-                        phone[key] = result[1];
+                        phone[key] = result[1].replace(',','');
                     });
 
                     const model = new Phone();
