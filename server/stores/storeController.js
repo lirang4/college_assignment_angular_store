@@ -43,15 +43,15 @@ exports.addPhone =  (req, res) => {
         if (err)
             res.send(err);
 
-            store.available_phones.push(req.body.phone_id);
-            store.save((err) => {
+        store.available_phones.push(req.body.phone_id);
+        store.save((err) => {
             if (err)
                 res.json(err);
 
-            res.json({
-                message: 'Store available',
-                data: store.available_phones
+                res.json({
+                    message: 'Store available',
+                    data: store.available_phones
+                });
             });
-        });
     });
 };

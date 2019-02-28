@@ -18,5 +18,8 @@ router.route('/phones/filters/')
 router.route('/availableStores/:phone_id')
     .get(phoneController.availableStores);
 
+router.route('/mostViewedBrand')
+    .get(phoneController.mostViewedBrand);
+    
 
 module.exports = router;

@@ -2,7 +2,10 @@ const Phone = require('./phoneModel');
 const View = require('../views/viewModel');
 const Store = require('../stores/storeModel');
 const mongoose = require('mongoose');
+var createCountMinSketch = require("count-min-sketch")
 const ObjectId = mongoose.Types.ObjectId;
+
+var sketch = createCountMinSketch()
 
 exports.index = (req, res) => {
     Phone.get((err, phones) => {
@@ -65,7 +68,7 @@ function updateViewCount(view) {
 exports.view = (req, res) => {
     Phone.findById(req.params.phone_id).populate('views').exec((err, phone) => {
         updateViewCount(phone.views);
-
+        sketch.update(phone.brand, 1)
         if (err)
             res.send(err);
 
@@ -206,3 +209,60 @@ exports.availableStores = (req, res) => {
         });
     });
 };
+
+// exports.phoneSearch = (req, res) => {
+//     Phone.find(
+//         { "brand": {
+//             '$regex': new RegExp(req.params.sub_string, "i")
+//         }}, 
+//         function(err,data) { 
+//             if (err) {
+//                 res.json({
+//                     status: "error",
+//                     message: err,
+//                 });
+//             }
+        
+//             res.json({
+//                 status: "success",
+//                 message: "Views retrieved successfully",
+//                 data: data
+//             });
+//         }
+//     );
+// };
+
+exports.mostViewedBrand = (req, res) => {
+    const aggregatorOpts = [
+        {$group: {_id: "$brand"}},
+        ];
+
+        Phone.aggregate(aggregatorOpts).exec((err, data) => {
+            
+            var mostView = sketch.query(data[0]._id);
+            var mostViewedBrand = data[0]._id;
+            data.forEach(val => {
+                var current_result = sketch.query(val._id)
+                if(mostView < current_result){
+                    mostView = current_result;
+                    mostViewedBrand = val._id;
+                }
+            });
+
+            if (err) {
+              res.json({
+                  status: "error",
+                  message: err,
+              });
+          }
+      
+          res.json({
+              status: "success",
+              message: "Views retrieved successfully",
+              data: mostViewedBrand
+          });
+        });
+
+
+;}
+
