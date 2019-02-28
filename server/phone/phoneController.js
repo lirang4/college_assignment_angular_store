@@ -14,6 +14,7 @@ exports.index = (req, res) => {
                 status: "error",
                 message: err,
             });
+            return;
         }
 
         res.json({
@@ -27,7 +28,7 @@ exports.index = (req, res) => {
 exports.new = (req, res) => {
     var phone = new Phone();
     phone._id = new mongoose.Types.ObjectId(),
-    phone.brand = req.body.brand;
+        phone.brand = req.body.brand;
     phone.series = req.body.series;
     phone.price = req.body.price;
     phone.colors = req.body.colors;
@@ -48,8 +49,10 @@ exports.new = (req, res) => {
             if (err) return handleError(err);
         });
 
-        if (err)
+        if (err) {
             res.json(err);
+            return;
+        }
 
         res.json({
             message: 'New phone added to the site!',
@@ -69,8 +72,10 @@ exports.view = (req, res) => {
     Phone.findById(req.params.phone_id).populate('views').exec((err, phone) => {
         updateViewCount(phone.views);
         sketch.update(phone.brand, 1)
-        if (err)
+        if (err) {
             res.send(err);
+            return;
+        }
 
         res.json({
             message: 'phone details loading..',
@@ -96,8 +101,10 @@ exports.update = (req, res) => {
         phone.ram = req.body.ram;
 
         phone.save((err) => {
-            if (err)
+            if (err) {
                 res.json(err);
+                return;
+            }
 
             res.json({
                 message: 'Phone Info updated',
@@ -125,8 +132,10 @@ exports.delete = (req, res) => {
     Phone.deleteOne({
         _id: req.params.phone_id
     }, (err, phone) => {
-        if (err)
+        if (err) {
             res.send(err);
+            return;
+        }
 
         res.json({
             status: "success",
@@ -149,18 +158,19 @@ function addQuery(query, key, value) {
         });
     }
     return reg;
-    //query[key] = {$or:[bla]}
 }
 
 function createQuery(req) {
     var query = {
         $and: []
     };
+
     for (var key in req.body) {
         if (req.body != undefined) {
             query.$and.push(addQuery(query, key, req.body[key]));
         }
     }
+
     return query;
 }
 
@@ -176,8 +186,11 @@ exports.filters = (req, res) => {
     }
 
     Phone.find(query, (err, phone) => {
-        if (err)
+        if (err) {
             res.send(err);
+            return;
+        }
+
         res.json({
             message: 'Phone details loading..',
             data: phone
@@ -186,83 +199,75 @@ exports.filters = (req, res) => {
 };
 
 exports.availableStores = (req, res) => {
-        const aggregatorOpts = [
-          {$unwind: "$available_phones"},
-          {$group: {_id: "$available_phones", stores: {$push: "$_id"}}},
-          {$match: { _id: ObjectId(req.params.phone_id) }}
-          ];
-          
-          Store.aggregate(aggregatorOpts).exec((err, data) => {
-          Store.populate(data, {path: "stores"}, function (err, data) {
+    const aggregatorOpts = [{
+            $unwind: "$available_phones"
+        },
+        {
+            $group: {
+                _id: "$available_phones",
+                stores: {
+                    $push: "$_id"
+                }
+            }
+        },
+        {
+            $match: {
+                _id: ObjectId(req.params.phone_id)
+            }
+        }
+    ];
+
+    Store.aggregate(aggregatorOpts).exec((err, data) => {
+        Store.populate(data, {
+            path: "stores"
+        }, function (err, data) {
             if (err) {
-              res.json({
-                  status: "error",
-                  message: err,
-              });
-          }
-      
-          res.json({
-              status: "success",
-              message: "Views retrieved successfully",
-              data: data
-          });
+                res.json({
+                    status: "error",
+                    message: err,
+                });
+                return;
+            }
+
+            res.json({
+                status: "success",
+                message: "Views retrieved successfully",
+                data: data
+            });
         });
     });
 };
 
-// exports.phoneSearch = (req, res) => {
-//     Phone.find(
-//         { "brand": {
-//             '$regex': new RegExp(req.params.sub_string, "i")
-//         }}, 
-//         function(err,data) { 
-//             if (err) {
-//                 res.json({
-//                     status: "error",
-//                     message: err,
-//                 });
-//             }
-        
-//             res.json({
-//                 status: "success",
-//                 message: "Views retrieved successfully",
-//                 data: data
-//             });
-//         }
-//     );
-// };
-
 exports.mostViewedBrand = (req, res) => {
-    const aggregatorOpts = [
-        {$group: {_id: "$brand"}},
-        ];
+    const aggregatorOpts = [{
+        $group: {
+            _id: "$brand"
+        }
+    }, ];
 
-        Phone.aggregate(aggregatorOpts).exec((err, data) => {
-            
-            var mostView = sketch.query(data[0]._id);
-            var mostViewedBrand = data[0]._id;
-            data.forEach(val => {
-                var current_result = sketch.query(val._id)
-                if(mostView < current_result){
-                    mostView = current_result;
-                    mostViewedBrand = val._id;
-                }
-            });
+    Phone.aggregate(aggregatorOpts).exec((err, data) => {
+        let mostView = 0;
+        let mostViewedBrand = undefined;
 
-            if (err) {
-              res.json({
-                  status: "error",
-                  message: err,
-              });
-          }
-      
-          res.json({
-              status: "success",
-              message: "Views retrieved successfully",
-              data: mostViewedBrand
-          });
+        data.forEach(val => {
+            const current_result = sketch.query(val._id)
+            if (mostView < current_result) {
+                mostView = current_result;
+                mostViewedBrand = val._id;
+            }
         });
 
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
 
-;}
-
+        res.json({
+            status: "success",
+            message: "Views retrieved successfully",
+            data: mostViewedBrand
+        });
+    });
+}

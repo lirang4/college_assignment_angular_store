@@ -60,7 +60,7 @@ io.sockets.on('connection', (client) => {
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
-  }
+}
 
 const create_stores = () => {
 
@@ -202,5 +202,3 @@ create_stores();
 
 // Initiate phones from zap
 scrap_phones_data();
-
-

@@ -15,6 +15,8 @@ export class AdminComponent implements OnInit {
   data1: Array<any>;
   data2: Array<any>;
 
+  bestBrand: string;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -30,6 +32,11 @@ export class AdminComponent implements OnInit {
       .subscribe((res: any) => {
         this.data2 = res.data.results.slice(0, 5);
         this.createChart2(this.data2);
+      });
+
+    this.http.get('/api/mostViewedBrand')
+      .subscribe((res: any) => {
+        this.bestBrand = res.data;
       });
   }
 

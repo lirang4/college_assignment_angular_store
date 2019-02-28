@@ -20,8 +20,9 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
     this.phone = this.route.snapshot.data.message.data;
 
-    this.http.get('/api/stores').subscribe((res: { data: any }) => {
-      this.stores = res.data;
+    this.http.get(`/api/availableStores/${this.phone._id}`).subscribe((res: { data: any }) => {
+      this.stores = res.data[0];
+      console.log(this.stores);
     });
   }
 
