@@ -23,3 +23,20 @@
     justify-content: center;
     margin-right: 20px;
 }
+
+.map {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-button {
+    margin-top: 10px;
+}
+
+agm-map {
+    margin-top: 50px;
+    height: 350px;
+    width: 800px;
+}

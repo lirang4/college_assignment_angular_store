@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as d3 from 'd3';
 
 export interface DataType1 { viewsNumber: number; }
@@ -16,6 +16,13 @@ export class AdminComponent implements OnInit {
   data2: Array<any>;
 
   bestBrand: string;
+
+  stores: Array<any>;
+
+  newLat: number;
+  newLong: number;
+  newPhone: string;
+  newHours: string;
 
   constructor(private http: HttpClient) { }
 
@@ -38,6 +45,26 @@ export class AdminComponent implements OnInit {
       .subscribe((res: any) => {
         this.bestBrand = res.data;
       });
+
+    this.http.get('/api/stores')
+      .subscribe((res: any) => {
+        this.stores = res.data;
+      });
+  }
+
+  addStore(): void {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    this.http.post(`/api/stores`, JSON.stringify({
+      long: this.newLong,
+      lat: this.newLat,
+      open_hours: this.newHours,
+      phone: this.newPhone,
+    }), { headers: headers }).subscribe((res) => {
+      this.http.get('/api/stores')
+        .subscribe((res2: any) => {
+          this.stores = res2.data;
+        });
+    });
   }
 
   private createChart(data): void {
