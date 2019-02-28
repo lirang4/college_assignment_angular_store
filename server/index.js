@@ -58,7 +58,12 @@ io.sockets.on('connection', (client) => {
     });
 });
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
 const create_stores = () => {
+
     var store = new Store();
     store.long = 32.789184;
     store.lat = 35.000811;
@@ -89,6 +94,7 @@ const create_stores = () => {
 }
 
 const scrap_phones_data = () => {
+
     for (let i = 1; i < 10; i++) {
         let options = {
             uri: `https://www.zap.co.il/models.aspx?sog=e-cellphone&pageinfo=${i}`,
@@ -174,6 +180,11 @@ const scrap_phones_data = () => {
                 });
 
                 for (const model of phones) {
+                    Store.find({}).populate('available_phones').exec((err, stores) => {
+                        var current_store = stores[getRandomInt(stores.length)];
+                        current_store.available_phones.push(model._id);
+                        current_store.save();
+                    });
                     model.save();
                 }
             })
@@ -181,6 +192,7 @@ const scrap_phones_data = () => {
                 console.log(err);
             });
     }
+
 
     ahoCorasick.build();
 }
@@ -190,3 +202,5 @@ create_stores();
 
 // Initiate phones from zap
 scrap_phones_data();
+
+
