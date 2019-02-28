@@ -70,6 +70,11 @@ function updateViewCount(view) {
 
 exports.view = (req, res) => {
     Phone.findById(req.params.phone_id).populate('views').exec((err, phone) => {
+        if (err || !phone) {
+            res.send(err);
+            return;
+        }
+
         updateViewCount(phone.views);
         sketch.update(phone.brand, 1)
         if (err) {
@@ -87,8 +92,10 @@ exports.view = (req, res) => {
 exports.update = (req, res) => {
     Phone.findById(req.params.phone_id, (err, phone) => {
 
-        if (err)
+        if (err || !phone) {
             res.send(err);
+            return;
+        }
 
         phone.brand = req.body.brand;
         phone.series = req.body.series;
