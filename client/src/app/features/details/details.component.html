@@ -5,7 +5,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div class="details-container">
+<div *ngIf="phone" class="details-container">
   <h2 class="header">{{ phone.series }}</h2>
   <span class="row">colors: {{ phone.color }}</span>
   <span class="row">create_date: {{ phone.create_date | date}}</span>
@@ -36,3 +36,7 @@
     <agm-marker *ngFor="let store of stores.stores" [latitude]="store.long" [longitude]="store.lat"></agm-marker>
   </agm-map>
 </div>
+
+<h2 *ngIf="!phone">
+  Phone not exist
+</h2>
